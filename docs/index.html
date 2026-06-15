@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Ebitengine2026 Prototype</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #12161c;
+        color: #e8f7ef;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow: hidden;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100dvh;
+        touch-action: none;
+      }
+
+      canvas {
+        width: min(100vw, calc(100dvh * 16 / 9));
+        height: min(100dvh, calc(100vw * 9 / 16));
+        display: block;
+        image-rendering: pixelated;
+        outline: none;
+      }
+
+      #loading {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #12161c;
+        font-size: 14px;
+      }
+
+      #loading.hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading">Loading...</div>
+    <script src="wasm_exec.js"></script>
+    <script>
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+        document.getElementById("loading").classList.add("hidden");
+        go.run(result.instance);
+      });
+    </script>
+  </body>
+</html>
